@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { ClosePopover } from "../ClosePopover";
 import { FeedbackKeysType } from "./feedbackTypes";
+import { FeedbackContentStep } from "./steps/FeedbackContentStep";
 
 import { FeedbackTypeStep } from "./steps/FeedbackTypeStep";
 
@@ -10,17 +10,16 @@ export function WidgetForm() {
     null
   );
 
+  function onBack() {
+    setFeedbackType(null);
+  }
+
   return (
     <div className="bg-zinc-900 p-4 relative rounded-2xl mb-4 flex flex-col items-center shadow-lg w-[calc(100vw-2rem)] md:w-auto">
-      <header>
-        <span className="text-xl leading-6">Deixe seu feedback</span>
-        <ClosePopover />
-      </header>
-
       {!feedbackType ? (
         <FeedbackTypeStep onFeedbackTypeChange={setFeedbackType} />
       ) : (
-        <p>Hello world</p>
+        <FeedbackContentStep feedbackType={feedbackType} onBack={onBack} />
       )}
 
       <footer>
