@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { api } from "../../../service/api";
 import { BackPopover } from "../../BackPopover";
 import { ClosePopover } from "../../ClosePopover";
+import { Loading } from "../../Loading";
 import { FeedbackKeysType, feedbackTypes } from "../feedbackTypes";
 import { ScreenshotButton } from "../ScreenshotButton";
 
@@ -19,16 +21,20 @@ export function FeedbackContentStep({
 
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [screenshot, setScreenshot] = useState<string | null>(null);
+  const [isSendingFeedback, setIsSendingFeedback] = useState(false);
 
-  function handleSubmitFeedback(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmitFeedback(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsSendingFeedback(true);
 
-    console.log({
-      feedbackMessage,
-      screenshot,
+    await api.post("/feedback", {
+      type: feedbackType,
+      comment: feedbackMessage,
+      screenshot: screenshot,
     });
 
     onFeedBackSent();
+    setIsSendingFeedback(false);
   }
 
   return (
@@ -57,11 +63,11 @@ export function FeedbackContentStep({
             onScreenshotTook={setScreenshot}
           />
           <button
-            disabled={!feedbackMessage}
+            disabled={!feedbackMessage || isSendingFeedback}
             className="p-2 bg-brand-500 rounded-md border-transparent flex-1 flex justify-center text-sm hover:bg-brand-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-brand-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-brand-500"
             type="submit"
           >
-            Enviar Feedback
+            {isSendingFeedback ? <Loading /> : "Enviar Feedback"}
           </button>
         </footer>
       </form>

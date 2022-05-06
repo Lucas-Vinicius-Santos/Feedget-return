@@ -12,15 +12,15 @@ export function ScreenshotButton({
   screenshot,
   onScreenshotTook,
 }: ScreenshotButtonProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isScreenshotLoading, setIsScreenshotLoading] = useState(false);
 
   async function handleOnTakeScreenshot() {
-    setIsLoading(true);
+    setIsScreenshotLoading(true);
 
     const canvas = await html2canvas(document.querySelector("html")!);
     const base64image = canvas.toDataURL("image/png");
     onScreenshotTook(base64image);
-    setIsLoading(false);
+    setIsScreenshotLoading(false);
   }
 
   if (screenshot) {
@@ -46,7 +46,11 @@ export function ScreenshotButton({
       type="button"
       onClick={handleOnTakeScreenshot}
     >
-      {isLoading ? <Loading /> : <Camera className="w-6 h-6 text-zinc-100" />}
+      {isScreenshotLoading ? (
+        <Loading />
+      ) : (
+        <Camera className="w-6 h-6 text-zinc-100" />
+      )}
     </button>
   );
 }
