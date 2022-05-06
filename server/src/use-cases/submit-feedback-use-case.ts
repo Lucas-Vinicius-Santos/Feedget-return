@@ -42,6 +42,7 @@ export class SubmitFeedbackUseCase {
         `<h1 style='color: #8357e7'>Novo Feedback</h1>`,
         `<p><strong>Tipo: </strong>   ${type}  </p>`,
         `<p><strong>Comentário: </strong>   ${comment}  </p>`,
+        screenshot ? `<img src="${screenshot}" />` : null,
         `</div>`,
       ].join("\n"),
     });
